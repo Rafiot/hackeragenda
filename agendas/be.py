@@ -545,24 +545,13 @@ generic_google_agenda(
 generic_meetup("ruby_burgers", "ruby_burgers-rb", background_color="white", text_color="#6F371F", tags=["ruby", "programming", "drink"], description="<p>Ruby lovers meet burger lovers. Join us to talk about ruby AND burgers in the best burger places in Brussels</p>")
 
 
-@event_source(background_color="#82FEA9", text_color="#DC0000", url="https://www.hackerspace.lu/")
-def syn2cat(create_event):
-    "<p>L'agenda du Syn2Cat, hackerspace Luxembourgeois</p>"
-
-    data = Calendar.from_ical(requests.get("https://wiki.hackerspace.lu/wiki/Special:Ask/-5B-5BCategory:Event-5D-5D-20-5B-5BStartDate::%2B-5D-5D-20-5B-5BStartDate::-3E2014-2D06-2D30-5D-5D/-3FStartDate%3Dstart/-3FEndDate%3Dend/-3FHas-20location/-5B-5BCategory:Event-5D-5D-20-5B-5BStartDate::%2B-5D-5D-20-5B-5BStartDate::-3E2014-2D06-2D30-5D-5D/-3FStartDate%3Dstart/-3FEndDate%3Dend/-3FHas-20location/mainlabel%3D/limit%3D50/order%3DASC/sort%3DStartDate/format%3Dicalendar").content)
-
-    for event in data.walk()[1:]:
-        db_event = create_event(
-            title=event["SUMMARY"].encode("Utf-8"),
-            start=event["DTSTART"].dt.replace(tzinfo=None),
-            end=event["DTEND"].dt.replace(tzinfo=None),
-            url=event["URL"],
-        )
-
-        db_event.tags.add("hackerspace", "luxembourg")
-
-        if "openmonday" in db_event.title.lower():
-            db_event.tags.add("meeting")
+generic_google_agenda(
+    "syn2cat",
+    "https://level2.lu/events/ical",
+    background_color="#82FEA9", text_color="#DC0000", url="https://www.level2.lu/",
+    tags=["hackerspace", "luxembourg"],
+    description="""<p>L'agenda du Syn2Cat, hackerspace Luxembourgeois</p>"""
+)
 
 
 @event_source(background_color="#333", text_color="white", url="http://www.timelab.org")
